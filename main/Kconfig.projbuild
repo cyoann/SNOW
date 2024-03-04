@@ -1,0 +1,142 @@
+menu "SNOW Configuration"
+
+  config ESP_WIFI_SSID
+      string "WiFi SSID"
+      default "Wokwi-GUEST"
+      help
+        Specify the WiFi SSID to connect to. The SSID is case-sensitive. If the SSID is not found, the device will show an error message and enter deep sleep mode.
+
+  config ESP_WIFI_PASSWORD
+      string "WiFi Password"
+      default ""
+      help
+        Specify the WiFi password to connect to. If the password is incorrect, the device will show an error message and enter deep sleep mode.
+
+  choice ESP_WIFI_SAE_MODE
+      prompt "WiFi SAE Mode selection"
+      default ESP_WPA3_SAE_PWE_BOTH
+      help
+        Select mode for SAE as Hunt and Peck, H2E or both.
+      config ESP_WPA3_SAE_PWE_HUNT_AND_PECK
+          bool "HUNT AND PECK"
+      config ESP_WPA3_SAE_PWE_HASH_TO_ELEMENT
+          bool "H2E"
+      config ESP_WPA3_SAE_PWE_BOTH
+          bool "BOTH"
+   endchoice
+
+  config ESP_WIFI_PW_ID
+      string "WiFi Password Identifier"
+      depends on ESP_WPA3_SAE_PWE_HASH_TO_ELEMENT|| ESP_WPA3_SAE_PWE_BOTH
+      default ""
+      help
+        Specify the WiFi password identifier to connect to. If the password identifier is incorrect, the device will show an error message and enter deep sleep mode.
+
+  config ESP_WIFI_MAX_RETRY
+      int "WiFi Max Retry"
+      default 5
+      help
+        Specify the maximum number of retries to connect to the WiFi network. If the device fails to connect to the network after the specified number of retries, it will show an error message and enter deep sleep mode.
+
+  choice ESP_WIFI_SCAN_AUTH_MODE_THRESHOLD
+      prompt "WiFi Scan Auth Mode Threshold"
+      default ESP_WIFI_AUTH_OPEN
+      help
+          The weakest authmode to accept in the scan mode.
+          This value defaults to ESP_WIFI_AUTH_WPA2_PSK incase password is present and ESP_WIFI_AUTH_OPEN is used.
+          Please select ESP_WIFI_AUTH_WEP/ESP_WIFI_AUTH_WPA_PSK incase AP is operating in WEP/WPA mode.
+
+      config ESP_WIFI_AUTH_OPEN
+          bool "OPEN"
+      config ESP_WIFI_AUTH_WEP
+          bool "WEP"
+      config ESP_WIFI_AUTH_WPA_PSK
+          bool "WPA PSK"
+      config ESP_WIFI_AUTH_WPA2_PSK
+          bool "WPA2 PSK"
+      config ESP_WIFI_AUTH_WPA_WPA2_PSK
+          bool "WPA/WPA2 PSK"
+      config ESP_WIFI_AUTH_WPA3_PSK
+          bool "WPA3 PSK"
+      config ESP_WIFI_AUTH_WPA2_WPA3_PSK
+          bool "WPA2/WPA3 PSK"
+      config ESP_WIFI_AUTH_WAPI_PSK
+          bool "WAPI PSK"
+   endchoice
+
+  config ESP_MQTT_CONNECTION_STRING
+      string "MQTT Connection string"
+      default "mqtt://mosquitto:1883/esp32?topic=domoticz/in"
+      help
+        Specify the MQTT connection string. The connection string should be in the following format:
+        mqtt://[username:password@]hostname[:port]/[clientid][?topic=topic_name][;mqtt://[username:password@]hostname[:port]/clientid?topic=topic_name;...]
+
+        Multiple brokers can be specified by separating them with a semicolon (;).
+
+        Example: mqtt://test.mosquitto.org:1883/esp32?topic=temperature/1;mqtt://test.mosquitto.org:1883/esp32?topic=temperature/2
+
+  config ESP_MQTT_MAX_RETRY
+      int "MQTT Max Retry"
+      default 5
+      help
+        Specify the maximum number of retries to connect to the MQTT broker. If the device fails to connect to the broker after the specified number of retries, it will show an error message and enter deep sleep mode.
+
+  config ESP_MQTT_DOMOTICZ_INTEGRATION
+      bool "Enable Domoticz Integration"
+      default y
+      help
+        Enable Domoticz integration. When enabled, the device will send data to the Domoticz server.
+
+  config ESP_SLEEP_DURATION
+      int "Sleep Duration"
+      default 600
+      help
+        Specify the sleep duration in seconds. After sending data to the configured brokers, the device will enter deep sleep mode for this duration.
+
+  config ESP_SLEEP_MODE
+      bool "Sleep Mode"
+      default y
+      help
+        Enable sleep mode. For battery-powered devices, it is recommended to enable this option.
+        When disabled, the device will loop indefinitely, sending data to the configured brokers and waiting given the Sleep Duration.
+
+  config ESP_ONE_WIRE_CONFIG_STRING
+    string "One Wire Configuration String"
+    default ""
+    help
+      Specify the configuration string for One Wire buses and sensors.
+      Format: <bus_pin>:<sensor_address>,<sensor_idx>,<sensor_resolution>|...;<bus_pin>:<sensor_address>,<sensor_idx>,<sensor_resolution>|...
+      Example: 14:0CE4A39A0ED1B23C,1,12|656B13286E82E9FE,2,12|E92F9586111195C3,3,12|1792DF81E7E7FB32,4,12|8E9EF5649C586AF6,5,12
+
+      Each bus should be separated by a semicolon (;) and within each bus:
+        - The pin number is followed by a colon (:).
+        - Each sensor is represented by its address, name, and resolution, separated by commas (,).
+        - Sensors within a bus are separated by pipes (|).
+
+  config ESP_DEBUG_MODE
+      bool "Enable Debug Mode"
+      default n
+      help
+        Activate debug mode. When enabled, the device prints debug messages on the serial output and measures application runtime.
+
+  config ESP_SIMULATED_DEVICE
+      bool "Whether this is a simulated device"
+      default n
+      help
+        If enabled, the device will simulate sensor data and send it to the cloud. If disabled, the device will read sensor data from the actual sensors and send it to the cloud. Deep sleep will be replaced with a delay in the simulated mode.
+
+  config ESP_SCANNER_MODE
+      bool "Enable OneWire Scanner Mode"
+      default n
+      help
+        Enable OneWire scanner mode. When enabled, the device will scan for OneWire devices and print their addresses to the serial output
+        and then stop. This is useful for finding the addresses of the sensors.
+
+  config ESP_SCANNER_GPIO
+      string "OneWire Scanner GPIO"
+      default "14"
+      help
+        Specify the GPIO pin to use for the OneWire scanner. This pin will be used to scan for OneWire devices.
+        Example: 14,15,16
+
+endmenu

@@ -1,0 +1,5 @@
+build/
+docker/domoticz/
+managed_components/
+sdkconfig
+sdkconfig.old

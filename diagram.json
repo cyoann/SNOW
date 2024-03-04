@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "author": "",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": -67.2,
+      "left": 398.44,
+      "attrs": { "builder": "esp-idf" }
+    },
+    {
+      "type": "board-ds18b20",
+      "id": "temp1",
+      "top": -74.38,
+      "left": 142.77,
+      "rotate": 270,
+      "attrs": { "deviceID": "111111111111" }
+    },
+    {
+      "type": "board-ds18b20",
+      "id": "temp2",
+      "top": -35.98,
+      "left": 142.77,
+      "rotate": 270,
+      "attrs": { "deviceID": "222222222222" }
+    },
+    {
+      "type": "board-ds18b20",
+      "id": "temp3",
+      "top": 2.42,
+      "left": 142.77,
+      "rotate": 270,
+      "attrs": { "deviceID": "333333333333" }
+    },
+    {
+      "type": "board-ds18b20",
+      "id": "temp4",
+      "top": 40.82,
+      "left": 142.77,
+      "rotate": 270,
+      "attrs": { "deviceID": "444444444444" }
+    },
+    {
+      "type": "board-ds18b20",
+      "id": "temp5",
+      "top": 79.22,
+      "left": 142.77,
+      "rotate": 270,
+      "attrs": { "deviceID": "555555555555" }
+    },
+    {
+      "type": "board-ds18b20",
+      "id": "temp6",
+      "top": 117.62,
+      "left": 142.77,
+      "rotate": 270,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+    ["temp1:VCC", "esp:5V", "red", ["h38.4", "v192"]],
+    ["temp2:VCC", "esp:5V", "red", ["h38.4", "v153.6"]],
+    ["temp3:VCC", "esp:5V", "red", ["h38.4", "v115.2"]],
+    ["temp4:VCC", "esp:5V", "red", ["h38.4", "v76.8"]],
+    ["temp5:VCC", "esp:5V", "red", ["h38.4", "v38.4"]],
+    ["temp6:VCC", "esp:5V", "red", ["h0"]],
+    ["esp:GND.1", "temp1:GND", "black", ["h-153.45", "v-124.8"]],
+    ["temp2:GND", "esp:GND.1", "black", ["h67.2", "v86.4"]],
+    ["temp3:GND", "esp:GND.1", "black", ["h67.2", "v48"]],
+    ["temp4:GND", "esp:GND.1", "black", ["h67.2", "v9.6"]],
+    ["temp5:GND", "esp:GND.1", "black", ["h67.2", "v-28.8"]],
+    ["esp:GND.1", "temp6:GND", "black", ["h-153.45", "v67.2"]],
+    ["esp:14", "temp1:DQ", "green", ["h-105.45", "v-115.2"]],
+    ["temp2:DQ", "esp:14", "green", ["h115.2", "v76.8"]],
+    ["temp3:DQ", "esp:14", "green", ["h115.2", "v38.4"]],
+    ["temp4:DQ", "esp:14", "green", ["h0"]],
+    ["temp5:DQ", "esp:14", "green", ["h115.2", "v-38.4"]],
+    ["temp6:DQ", "esp:14", "green", ["h115.2", "v-76.8"]]
+  ],
+  "dependencies": {}
+}
